@@ -94,7 +94,7 @@ const OtherMethods = (props) => (
 // const Twitter = (props) => <a href="#" id="twitterIcon"></a>;
 
 const Google = (props) => (
-  <a onClick={() => signIn("auth0")}>
+  <a onClick={() => signIn("auth0")} href="#">
     <GoogleIcon width="50" height="50" />
   </a>
 );
