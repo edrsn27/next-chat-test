@@ -1,12 +1,27 @@
-const App = (props) => <LoginForm />;
+const App = (props) => <HomePage />;
 import GoogleIcon from "../components/Global/Svg/GoogleIcon";
-function LoginForm() {
+
+import { signIn, signOut, useSession } from "next-auth/client";
+
+function HomePage() {
+  const [session, loading] = useSession();
+  console.log(session);
   return (
-    <div id="loginform">
-      <FormHeader title="Login" />
-      <Form />
-      <OtherMethods />
-    </div>
+    <>
+      {!session && (
+        <div id="loginform">
+          <FormHeader title="Login" />
+          <Form />
+          <OtherMethods />
+        </div>
+      )}
+      {session && (
+        <>
+          Signed in as {session.user.email} <br />
+          <button onClick={() => signOut()}>Sign out</button>
+        </>
+      )}
+    </>
   );
 }
 
@@ -57,7 +72,7 @@ const OtherMethods = (props) => (
 // const Twitter = (props) => <a href="#" id="twitterIcon"></a>;
 
 const Google = (props) => (
-  <a href="">
+  <a onClick={() => signIn("auth0")}>
     <GoogleIcon width="50" height="50" />
   </a>
 );

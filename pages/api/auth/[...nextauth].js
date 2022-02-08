@@ -1,14 +1,15 @@
+// pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
-import GithubProvider from "next-auth/providers/github";
+import Providers from "next-auth/providers";
 
 export default NextAuth({
-  // Configure one or more authentication providers
+  secret: process.env.SECRET,
   providers: [
-    Auth0Provider({
+    // OAuth authentication providers
+    Providers.Auth0({
       clientId: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      issuer: process.env.AUTH0_ISSUER,
+       domain: process.env.AUTH0_DOMAIN,
     }),
-    // ...add more providers here
   ],
 });
