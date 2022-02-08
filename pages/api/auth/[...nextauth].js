@@ -2,7 +2,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 
-console.log(process.env.AUTH0_DOMAIN)
+
 export default NextAuth({
   providers: [
     // OAuth authentication providers
