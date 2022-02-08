@@ -26,7 +26,7 @@ import { signIn, signOut, useSession } from "next-auth/client";
 
 function HomePage() {
   const [session, loading] = useSession();
-  console.log(session);
+ 
   return (
     <>
       {!session && (
