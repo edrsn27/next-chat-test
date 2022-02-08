@@ -32,7 +32,7 @@ function HomePage() {
       {!session && (
         <div id="loginform">
           <FormHeader title="Login" />
-          <Form />
+          {/* <Form /> */}
           <OtherMethods />
         </div>
       )}
