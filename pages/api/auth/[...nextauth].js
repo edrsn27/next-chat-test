@@ -1,9 +1,9 @@
 // pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-
+var jwt = require("jwt-simple");
 export default NextAuth({
-  providers: [
+  providers: [  
     // OAuth authentication providers
     Providers.Auth0({
       clientId: process.env.AUTH0_CLIENT_ID,
@@ -11,18 +11,43 @@ export default NextAuth({
       domain: process.env.AUTH0_DOMAIN,
     }),
   ],
-
   jwt: {
-    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+    secret: process.env.NEXTAUTH_SECRET,
+    // encode: async ({ secret, token, maxAge }) => {
+    //   var payload = token;
+    //   // var iat = Math.floor(Date.now() / 1000);
+    //   // var exp = iat + maxAge;
 
-    // You can also specify a public key for verification if using public/private key (but private only is fine)
-    // verificationKey: process.env.JWT_SIGNING_PUBLIC_KEY,
+    //   // payload.iat = iat;
+    //   // payload.exp = exp;
 
-    // If you want to use some key format other than HS512 you can specify custom options to use
-    // when verifying (note: verificationOptions should include a value for maxTokenAge as well).
-    // verificationOptions = {
-    //   maxTokenAge: `${maxAge}s`, // e.g. `${30 * 24 * 60 * 60}s` = 30 days
-    //   algorithms: ['HS512']
+    //   var encodedToken = jwt.encode(payload, secret);
+    //   console.log(encodedToken)
+    //   return encodedToken;
     // },
+    // decode: async ({ secret, token, maxAge }) => {
+    //   var decodedToken = jwt.decode(token, secret);
+    //   console.log(decodedToken)
+    //   return decodedToken;
+    // },
+  },
+
+  callbacks: {
+    signIn: async (user, account, profile) => {
+      return Promise.resolve(true);
+    },
+    session: async (session, user) => {
+      return Promise.resolve(session);
+    },
+    jwt: async (token, user, account, profile, isNewUser) => {
+      const isSignIn = user ? true : false;
+      // Add auth_time to token on signin in
+      if (isSignIn) {
+        token.aud = process.env.REALM_APP_ID;
+      }
+     
+      // user && (token.user = user);
+      return Promise.resolve(token);
+    },
   },
 });
